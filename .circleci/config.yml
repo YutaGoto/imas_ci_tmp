@@ -1,0 +1,29 @@
+version: 2.1
+ubuntu_image: &ubuntu_image
+  ubuntu:18.04
+install-sudo: &install-sudo |
+  apt-get update
+  apt-get install -y sudo
+orbs:
+  todays-imas-idol: yutagoto/todays-imas-idol@volatile
+
+executors:
+  ubuntu-docker:
+    docker:
+      - image: *ubuntu_image
+        environment:
+          TZ: Asia/Tokyo
+
+jobs:
+  echo:
+    executor: ubuntu-docker
+    steps:
+      - run:
+          command: *install-sudo
+      - todays-imas-idol/echo-todays-imas-idol
+
+workflows:
+  main:
+    jobs:
+      - echo
+
